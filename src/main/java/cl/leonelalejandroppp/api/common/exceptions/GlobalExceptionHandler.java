@@ -1,6 +1,7 @@
 package cl.leonelalejandroppp.api.common.exceptions;
 
 import cl.leonelalejandroppp.api.common.classes.CommonResponse;
+import cl.leonelalejandroppp.api.users.exceptions.BadPasswordException;
 import cl.leonelalejandroppp.api.users.exceptions.EmailExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<CommonResponse> handleExceptionMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        System.out.println(ex.getCause());
-        System.out.println(ex.getMessage());
         FieldError error = (FieldError) ex.getBindingResult().getAllErrors().get(0);
         CommonResponse commonResponse = new CommonResponse(error.getDefaultMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(commonResponse);
@@ -26,6 +25,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EmailExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<CommonResponse> handleExceptionEmailExistsException (EmailExistsException ex) {
+        CommonResponse commonResponse = new CommonResponse(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(commonResponse);
+    }
+
+    @ExceptionHandler(BadPasswordException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<CommonResponse> handleExceptionBadPassword (BadPasswordException ex) {
         CommonResponse commonResponse = new CommonResponse(ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(commonResponse);
     }

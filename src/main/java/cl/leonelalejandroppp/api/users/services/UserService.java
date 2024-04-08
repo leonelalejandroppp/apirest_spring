@@ -25,6 +25,7 @@ public class UserService {
     private final PhoneService phoneService;
     private final PasswordEncoder passwordEncoder;
     private final JWTService jwtService;
+    private final PasswordService passwordService;
 
     public List<UserListDTO> getAllUsers () {
         List<UserEntity> list = this.userRepository.findAll();
@@ -41,6 +42,7 @@ public class UserService {
 
     public UserEntity createUser (CreateUserDTO createUserDTO) {
         this.alreadyExistsEmail(createUserDTO.getEmail());
+        passwordService.validatePassword(createUserDTO.getPassword());
         UserEntity userEntity = createUserDTO.toUserEntity();
         userEntity.setPassword(this.passwordEncoder.encode(createUserDTO.getPassword()));
         userEntity.setRole(Role.USER);
