@@ -14,8 +14,6 @@ public class PasswordService {
     private String errorRegex;
 
     public void validatePassword (String password) {
-        System.out.println(regex);
-        System.out.println(errorRegex);
         if(!password.matches(this.regex)) {
             throw new BadPasswordException(this.errorRegex);
         }
